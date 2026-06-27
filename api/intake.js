@@ -5,7 +5,7 @@
 import { GoogleGenerativeAI } from '@google/generative-ai';
 import { Resend } from 'resend';
 
-const SYSTEM_PROMPT = `You are the intake analyst for an independent personal trainer (Efe, a CPT serving the Greater LA area + online). Your reader is THE TRAINER, never the client. You convert a new lead's intake answers into a fast, skimmable brief the trainer reads in under 60 seconds before deciding how to onboard the lead.
+const SYSTEM_PROMPT = `You are the intake analyst for an independent personal trainer (Efe, a CPT serving LA & Ventura County in person + online). Your reader is THE TRAINER, never the client. You convert a new lead's intake answers into a fast, skimmable brief the trainer reads in under 60 seconds before deciding how to onboard the lead.
 
 ROLE & TONE
 - Write FOR the trainer: practical, blunt, coach-to-coach. No fluff, no hype, no motivational filler.
@@ -77,6 +77,21 @@ const REQUIRED = ['firstName', 'email', 'location', 'goal', 'level', 'days', 'se
 const rate = new Map();
 const clean = (s, max = 2000) => String(s ?? '').slice(0, max).trim();
 
+// Discord caps messages at 2000 chars - split the brief on line boundaries so nothing is cut.
+async function sendDiscordChunks(url, text) {
+  const chunks = [];
+  let cur = '';
+  for (const line of text.split('\n')) {
+    const piece = line.length > 1850 ? line.slice(0, 1850) : line;
+    if ((cur + '\n' + piece).length > 1850) { if (cur) chunks.push(cur); cur = piece; }
+    else cur = cur ? cur + '\n' + piece : piece;
+  }
+  if (cur) chunks.push(cur);
+  for (const c of chunks) {
+    try { await fetch(url, { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ content: c }) }); } catch {}
+  }
+}
+
 export default async function handler(req, res) {
   if (req.method !== 'POST') return res.status(405).json({ ok: false, error: 'method' });
 
@@ -117,7 +132,7 @@ export default async function handler(req, res) {
       .getGenerativeModel({ model: 'gemini-2.5-flash', systemInstruction: SYSTEM_PROMPT });
     const r = await model.generateContent({
       contents: [{ role: 'user', parts: [{ text: FORMAT + '\n\nINTAKE:\n' + intake }] }],
-      generationConfig: { temperature: 0.6, maxOutputTokens: 1200 },
+      generationConfig: { temperature: 0.6, maxOutputTokens: 1500 },
     });
     brief = r.response.text();
   } catch (e) {
@@ -129,10 +144,7 @@ export default async function handler(req, res) {
   const tasks = [];
 
   if (process.env.DISCORD_WEBHOOK_URL) {
-    tasks.push(fetch(process.env.DISCORD_WEBHOOK_URL, {
-      method: 'POST', headers: { 'content-type': 'application/json' },
-      body: JSON.stringify({ content: ('**New coaching lead**\n' + brief).slice(0, 1990) }),
-    }).catch(() => {}));
+    tasks.push(sendDiscordChunks(process.env.DISCORD_WEBHOOK_URL, '**New coaching lead**\n' + brief));
   }
   if (process.env.RESEND_API_KEY) {
     const resend = new Resend(process.env.RESEND_API_KEY);
