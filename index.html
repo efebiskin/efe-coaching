@@ -117,7 +117,9 @@
 
   .reveal{opacity:0;transform:translateY(22px);transition:.7s cubic-bezier(.2,.7,.2,1)}
   .reveal.in{opacity:1;transform:none}
+  @media (prefers-reduced-motion: reduce){.reveal{opacity:1!important;transform:none!important;transition:none!important}}
 </style>
+<noscript><style>.reveal{opacity:1!important;transform:none!important}</style></noscript>
 </head>
 <body>
 
@@ -132,7 +134,7 @@
 <header class="hero">
   <div class="glow"></div><div class="grid-lines"></div>
   <div class="wrap">
-    <span class="eyebrow">Certified Personal Trainer · In-Person & Online</span>
+    <span class="eyebrow">Thousand Oaks, CA · In-Person & Online Coaching</span>
     <h1 class="display">Coaching,<br><span class="lime">engineered.</span></h1>
     <p class="lead">Data-driven 1-on-1 and online coaching that actually sticks. Custom programming, nutrition that fits your life, and weekly accountability — built around <span class="serif" style="font-size:1.15em">you</span>, not a template.</p>
     <div class="cta">
@@ -155,7 +157,7 @@
     <h2 class="display">Pick the way you want to <span class="lime">train.</span></h2>
     <div class="progs">
       <div class="prog">
-        <h3>Online Coaching</h3><div class="price">From $99 / mo</div>
+        <h3>Online Coaching</h3><div class="price">Let's talk</div>
         <div class="desc">Train anywhere, fully programmed and supported.</div>
         <ul><li>Custom training program</li><li>Nutrition guidance</li><li>Weekly check-ins + form review</li><li>Chat support</li></ul>
         <a class="btn btn-ghost" href="mailto:efebskn@gmail.com?subject=Online%20Coaching">Start online →</a>
@@ -168,7 +170,7 @@
         <a class="btn btn-lime" href="mailto:efebskn@gmail.com?subject=1-on-1%20In-Person%20Training">Book 1-on-1 →</a>
       </div>
       <div class="prog">
-        <h3>Hybrid</h3><div class="price">Custom</div>
+        <h3>Hybrid</h3><div class="price">Let's talk</div>
         <div class="desc">In-person where it counts, online the rest.</div>
         <ul><li>Mix of in-person + online</li><li>Built around your schedule</li><li>Program + nutrition + check-ins</li><li>Priority support</li></ul>
         <a class="btn btn-ghost" href="mailto:efebskn@gmail.com?subject=Hybrid%20Coaching">Go hybrid →</a>
@@ -195,12 +197,7 @@
   <div class="wrap reveal">
     <div class="kicker">Results</div>
     <h2 class="display">Real people. <span class="lime">Real progress.</span></h2>
-    <p class="sub" style="color:var(--muted);max-width:560px;margin-top:14px">Swap these for your own client wins — a line on what changed, first name + goal.</p>
-    <div class="quotes">
-      <div class="quote ph"><div class="stars">★★★★★</div><p>"[Add a real client testimonial here — what they achieved and how the coaching felt.]"</p><div class="who">— Client name, goal</div></div>
-      <div class="quote ph"><div class="stars">★★★★★</div><p>"[A second client win — strength, weight, confidence, consistency.]"</p><div class="who">— Client name, goal</div></div>
-      <div class="quote ph"><div class="stars">★★★★★</div><p>"[A third — ideally with a number: lbs lost, kg added, weeks in.]"</p><div class="who">— Client name, goal</div></div>
-    </div>
+    <p style="color:var(--muted);max-width:600px;margin-top:16px">Client wins are shared with permission — ask to see recent results during your free consult. Real testimonials land here as they come in.</p>
   </div>
 </section>
 
@@ -244,16 +241,15 @@
     <div class="brand display">EFE BISKIN<span class="lime">.</span></div>
     <div>
       <a class="btn btn-ghost" href="mailto:efebskn@gmail.com">efebskn@gmail.com</a>
-      <a class="sm" href="#" data-edit="instagram">Instagram</a>
       <a class="sm" href="#programs">Programs</a>
+      <a class="sm" href="#faq">FAQ</a>
     </div>
   </div>
   <div class="meta">© 2026 Efe Biskin · Certified Personal Trainer · Coaching, engineered.</div>
 </div></footer>
 
 <div class="sticky">
-  <a class="btn btn-ghost" href="#" data-edit="instagram">Instagram</a>
-  <a class="btn btn-lime" href="mailto:efebskn@gmail.com?subject=Free%20Coaching%20Consultation">Book free consult</a>
+  <a class="btn btn-lime" href="mailto:efebskn@gmail.com?subject=Free%20Coaching%20Consultation">Book a free consult →</a>
 </div>
 
 <script>
