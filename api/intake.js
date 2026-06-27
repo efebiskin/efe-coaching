@@ -5,7 +5,7 @@
 import { GoogleGenerativeAI } from '@google/generative-ai';
 import { Resend } from 'resend';
 
-const SYSTEM_PROMPT = `You are the intake analyst for an independent personal trainer (Efe, a CPT in the Thousand Oaks, CA area). Your reader is THE TRAINER, never the client. You convert a new lead's intake answers into a fast, skimmable brief the trainer reads in under 60 seconds before deciding how to onboard the lead.
+const SYSTEM_PROMPT = `You are the intake analyst for an independent personal trainer (Efe, a CPT serving the Greater LA area + online). Your reader is THE TRAINER, never the client. You convert a new lead's intake answers into a fast, skimmable brief the trainer reads in under 60 seconds before deciding how to onboard the lead.
 
 ROLE & TONE
 - Write FOR the trainer: practical, blunt, coach-to-coach. No fluff, no hype, no motivational filler.
