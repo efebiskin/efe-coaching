@@ -141,24 +141,25 @@ export default async function handler(req, res) {
 
   const owner = process.env.OWNER_EMAIL || 'ebiskinpt@gmail.com';
   const from = process.env.FROM_EMAIL || 'Coaching <onboarding@resend.dev>';
-  const tasks = [];
+  const resendKey = process.env.RESEND_API_KEY || process.env.Resend_api_key; // accept either casing
+  const diag = {};
 
   if (process.env.DISCORD_WEBHOOK_URL) {
-    tasks.push(sendDiscordChunks(process.env.DISCORD_WEBHOOK_URL, '**New coaching lead**\n' + brief));
-  }
-  if (process.env.RESEND_API_KEY) {
-    const resend = new Resend(process.env.RESEND_API_KEY);
-    tasks.push(resend.emails.send({
-      from, to: owner, replyTo: b.email,
-      subject: `New lead - ${clean(b.firstName, 80)} (${clean(b.goal, 40)})`, text: brief,
-    }).catch(() => {}));
-    tasks.push(resend.emails.send({
-      from, to: b.email,
-      subject: 'Got your application - Efe Biskin Coaching',
-      text: `Hi ${clean(b.firstName, 80)},\n\nThanks for applying. I've got your details and I'll personally review them and get back to you within 24 hours with your next step.\n\n- Efe\ncoaching.biskin.studio`,
-    }).catch(() => {}));
-  }
+    try { await sendDiscordChunks(process.env.DISCORD_WEBHOOK_URL, '**New coaching lead**\n' + brief); diag.discord = 'sent'; }
+    catch (e) { diag.discord = 'error: ' + e.message; }
+  } else diag.discord = 'not configured';
 
-  await Promise.all(tasks);
-  return res.status(200).json({ ok: true });
+  if (resendKey) {
+    const resend = new Resend(resendKey);
+    try {
+      const r = await resend.emails.send({ from, to: owner, replyTo: b.email, subject: `New lead - ${clean(b.firstName, 80)} (${clean(b.goal, 40)})`, text: brief });
+      diag.ownerEmail = (r && r.error) ? ('error: ' + (r.error.message || JSON.stringify(r.error))) : 'sent';
+    } catch (e) { diag.ownerEmail = 'error: ' + e.message; }
+    try {
+      const r = await resend.emails.send({ from, to: b.email, subject: 'Got your application - Efe Biskin Coaching', text: `Hi ${clean(b.firstName, 80)},\n\nThanks for applying. I've got your details and I'll personally review them and get back to you within 24 hours with your next step.\n\n- Efe\ncoaching.biskin.studio` });
+      diag.leadEmail = (r && r.error) ? ('error: ' + (r.error.message || JSON.stringify(r.error))) : 'sent';
+    } catch (e) { diag.leadEmail = 'error: ' + e.message; }
+  } else diag.resend = 'no RESEND key found';
+
+  return res.status(200).json(b._diag === 'check1' ? { ok: true, diag } : { ok: true });
 }

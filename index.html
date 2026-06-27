@@ -385,7 +385,7 @@
       const j=await res.json().catch(()=>({}));
       if(res.ok && j.ok){
         status.className='ok';
-        status.textContent="Got it — thank you. I'll personally review your details and get back to you within 24 hours. Check your inbox for a confirmation.";
+        status.textContent="Got it — thank you. I'll personally review your details and get back to you within 24 hours.";
         form.reset(); cond.style.display='none';
       }else{
         status.className='err';
