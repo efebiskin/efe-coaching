@@ -237,6 +237,104 @@
   </div>
 </section>
 
+<style>
+  .intake{max-width:720px;margin:0 auto}
+  .intake .fsec{border-top:1px solid var(--line);padding:24px 0}
+  .intake .fsec:first-of-type{border-top:none;padding-top:8px}
+  .intake .slabel{font-family:'Archivo';font-weight:800;text-transform:uppercase;font-size:.92rem;color:var(--lime);margin-bottom:16px;letter-spacing:.04em}
+  .intake .field{margin-bottom:15px}
+  .intake label.fl{display:block;font-size:.9rem;color:var(--cream);margin-bottom:7px}
+  .intake .req{color:var(--red)}
+  .intake input,.intake select,.intake textarea{width:100%;background:var(--panel2);border:1px solid var(--line);border-radius:12px;padding:13px 14px;color:var(--cream);font-family:inherit;font-size:.97rem;transition:.15s}
+  .intake input:focus,.intake select:focus,.intake textarea:focus{outline:none;border-color:var(--lime);box-shadow:0 0 0 3px rgba(200,255,0,.12)}
+  .intake textarea{min-height:70px;resize:vertical}
+  .intake .radios{display:flex;flex-direction:column;gap:9px}
+  .intake .radios label,.intake .checks label{display:flex;align-items:center;gap:10px;font-size:.94rem;color:#cfcfc7;cursor:pointer;margin:0;padding:11px 14px;border:1px solid var(--line);border-radius:12px;transition:.15s}
+  .intake .radios label:hover,.intake .checks label:hover{border-color:var(--lime)}
+  .intake .radios input,.intake .checks input{width:auto;accent-color:var(--lime);margin:0}
+  .intake .checks{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+  @media(max-width:540px){.intake .checks{grid-template-columns:1fr}}
+  .intake .submit{width:100%;margin-top:12px;font-size:1.05rem;padding:17px;border:none;cursor:pointer}
+  .intake .hp{position:absolute!important;left:-9999px;width:1px;height:1px;overflow:hidden}
+  .intake .note{color:var(--muted);font-size:.9rem;margin-top:14px;margin-bottom:6px}
+  #cond-equipment{display:none}
+  #formStatus{margin-top:16px;padding:15px 16px;border-radius:12px;font-size:.95rem;display:none}
+  #formStatus.ok{display:block;background:rgba(200,255,0,.1);border:1px solid var(--lime);color:var(--cream)}
+  #formStatus.err{display:block;background:rgba(255,79,54,.1);border:1px solid var(--red);color:var(--cream)}
+</style>
+
+<section id="apply">
+  <div class="wrap reveal">
+    <div class="kicker">Apply for coaching</div>
+    <h2 class="display">Let's build your <span class="lime">plan.</span></h2>
+    <p class="note">Takes 60 seconds. The more you tell me, the better your first program fits — it comes straight to me, no spam.</p>
+    <form id="intakeForm" class="intake" novalidate>
+      <input type="text" name="website" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true" />
+
+      <div class="fsec"><div class="slabel">1 · About you</div>
+        <div class="field"><label class="fl">First name <span class="req">*</span></label><input type="text" name="firstName" required maxlength="80" /></div>
+        <div class="field"><label class="fl">Email <span class="req">*</span></label><input type="email" name="email" required maxlength="120" /></div>
+        <div class="field"><label class="fl">Phone <span style="color:var(--muted)">(check-ins / scheduling)</span></label><input type="tel" name="phone" maxlength="40" /></div>
+        <div class="field"><label class="fl">Training location <span class="req">*</span></label><div class="radios">
+          <label><input type="radio" name="location" value="In-person (Thousand Oaks area)" required /> In-person (Thousand Oaks area)</label>
+          <label><input type="radio" name="location" value="Online (anywhere)" /> Online (anywhere)</label>
+          <label><input type="radio" name="location" value="Either works" /> Either works</label>
+        </div></div>
+      </div>
+
+      <div class="fsec"><div class="slabel">2 · Your goal</div>
+        <div class="field"><label class="fl">Main goal <span class="req">*</span></label><select name="goal" required>
+          <option value="" disabled selected>Pick one…</option>
+          <option>Lose fat / lean out</option><option>Build muscle</option><option>Get stronger</option>
+          <option>General health &amp; energy</option><option>Athletic performance / sport</option><option>Recomp (lose fat + build muscle)</option>
+        </select></div>
+        <div class="field"><label class="fl">Anything specific behind it? <span style="color:var(--muted)">(event, deadline, why now)</span></label><textarea name="goalDriver" maxlength="500"></textarea></div>
+      </div>
+
+      <div class="fsec"><div class="slabel">3 · Training history</div>
+        <div class="field"><label class="fl">Current training level <span class="req">*</span></label><div class="radios">
+          <label><input type="radio" name="level" value="Brand new / returning after a long break" required /> Brand new / returning after a break</label>
+          <label><input type="radio" name="level" value="Some experience (on &amp; off)" /> Some experience (on &amp; off)</label>
+          <label><input type="radio" name="level" value="Consistent 1+ year" /> Consistent 1+ year</label>
+          <label><input type="radio" name="level" value="Advanced lifter" /> Advanced lifter</label>
+        </div></div>
+      </div>
+
+      <div class="fsec"><div class="slabel">4 · Your schedule</div>
+        <div class="field"><label class="fl">Days per week you can train <span class="req">*</span></label><select name="days" required><option value="" disabled selected>Pick…</option><option>2</option><option>3</option><option>4</option><option>5</option><option>6+</option></select></div>
+        <div class="field"><label class="fl">Time per session <span class="req">*</span></label><select name="session" required><option value="" disabled selected>Pick…</option><option>30 min</option><option>45 min</option><option>60 min</option><option>75+ min</option></select></div>
+      </div>
+
+      <div class="fsec"><div class="slabel">5 · Equipment &amp; access</div>
+        <div class="field"><label class="fl">Do you have gym access? <span class="req">*</span></label><div class="radios">
+          <label><input type="radio" name="gymAccess" value="Full gym" required /> Full gym</label>
+          <label><input type="radio" name="gymAccess" value="Home gym / some equipment" /> Home gym / some equipment</label>
+          <label><input type="radio" name="gymAccess" value="Bodyweight only / minimal" /> Bodyweight only / minimal</label>
+        </div></div>
+        <div class="field" id="cond-equipment"><label class="fl">What equipment do you have? <span style="color:var(--muted)">(check all)</span></label><div class="checks">
+          <label><input type="checkbox" name="equipment" value="Dumbbells" /> Dumbbells</label>
+          <label><input type="checkbox" name="equipment" value="Barbell + plates" /> Barbell + plates</label>
+          <label><input type="checkbox" name="equipment" value="Resistance bands" /> Resistance bands</label>
+          <label><input type="checkbox" name="equipment" value="Pull-up bar" /> Pull-up bar</label>
+          <label><input type="checkbox" name="equipment" value="Kettlebells" /> Kettlebells</label>
+          <label><input type="checkbox" name="equipment" value="Bench" /> Bench</label>
+          <label><input type="checkbox" name="equipment" value="Cardio machine" /> Cardio machine</label>
+          <label><input type="checkbox" name="equipment" value="None" /> None</label>
+        </div></div>
+      </div>
+
+      <div class="fsec"><div class="slabel">6 · Health &amp; notes</div>
+        <div class="field"><label class="fl">Injuries, conditions, or movement limitations?</label><textarea name="injuries" maxlength="500" placeholder="Bad knee, lower back, none — anything I should program around"></textarea></div>
+        <div class="field"><label class="fl">Monthly budget for coaching <span class="req">*</span></label><select name="budget" required><option value="" disabled selected>Pick…</option><option>Under $100</option><option>$100–200</option><option>$200–350</option><option>$350+</option><option>Not sure yet — tell me options</option></select></div>
+        <div class="field"><label class="fl">Anything else I should know?</label><textarea name="notes" maxlength="500"></textarea></div>
+      </div>
+
+      <button type="submit" class="btn btn-lime submit">Send my application →</button>
+      <div id="formStatus"></div>
+    </form>
+  </div>
+</section>
+
 <footer><div class="wrap">
   <div class="row">
     <div class="brand display">EFE BISKIN<span class="lime">.</span></div>
@@ -257,6 +355,50 @@
 <script>
   const io=new IntersectionObserver((es)=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}}),{threshold:.1});
   document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+
+  // route "Book a consult" CTA buttons to the inline form (keep the footer direct-email link)
+  document.querySelectorAll('a.btn[href*="mail.google.com"]').forEach(a=>{
+    if(a.closest('footer')) return;
+    a.setAttribute('href','#apply'); a.removeAttribute('target');
+  });
+
+  // show the equipment list only when they don't have a full gym
+  const cond=document.getElementById('cond-equipment');
+  document.querySelectorAll('input[name="gymAccess"]').forEach(r=>r.addEventListener('change',()=>{
+    if(r.checked) cond.style.display=(r.value!=='Full gym')?'block':'none';
+  }));
+
+  // submit -> POST to the serverless function
+  const form=document.getElementById('intakeForm');
+  const status=document.getElementById('formStatus');
+  if(form) form.addEventListener('submit', async (e)=>{
+    e.preventDefault();
+    if(!form.reportValidity()) return;
+    const fd=new FormData(form), data={};
+    for(const [k,v] of fd.entries()){
+      if(k==='equipment'){ (data.equipment=data.equipment||[]).push(v); } else data[k]=v;
+    }
+    const btn=form.querySelector('button[type=submit]');
+    btn.disabled=true; btn.textContent='Sending…'; status.className=''; status.style.display='none';
+    try{
+      const res=await fetch('/api/intake',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify(data)});
+      const j=await res.json().catch(()=>({}));
+      if(res.ok && j.ok){
+        status.className='ok';
+        status.textContent="Got it — thank you. I'll personally review your details and get back to you within 24 hours. Check your inbox for a confirmation.";
+        form.reset(); cond.style.display='none';
+      }else{
+        status.className='err';
+        status.textContent=(j.error||'Something went wrong')+" — or just email me at ebiskinpt@gmail.com";
+      }
+    }catch(err){
+      status.className='err';
+      status.textContent="Couldn't send right now — please email me at ebiskinpt@gmail.com";
+    }finally{
+      btn.disabled=false; btn.textContent='Send my application →';
+      status.scrollIntoView({behavior:'smooth',block:'center'});
+    }
+  });
 </script>
 </body>
 </html>

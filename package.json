@@ -1,0 +1,10 @@
+{
+  "name": "coaching-intake",
+  "private": true,
+  "type": "module",
+  "engines": { "node": "22.x" },
+  "dependencies": {
+    "@google/generative-ai": "^0.24.0",
+    "resend": "^4.0.0"
+  }
+}
